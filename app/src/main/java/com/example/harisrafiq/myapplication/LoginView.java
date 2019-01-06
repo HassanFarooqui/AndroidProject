@@ -1,6 +1,11 @@
 package com.example.harisrafiq.myapplication;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +24,7 @@ import org.bson.Document;
 import java.util.Iterator;
 
 
+
 public class LoginView extends AppCompatActivity {
 
     MongoClient mongoClient;
@@ -35,27 +41,68 @@ public class LoginView extends AppCompatActivity {
 
         etx_Username = (EditText) findViewById(R.id.etx_username);
         etx_Password = (EditText) findViewById(R.id.etx_password);
+       // etx_Username.setText("admin");
+       // etx_Password.setText("admin");
+
 
     }
+
+    public void alertView(String title, String message, Context context){
+
+//        AlertDialog.Builder builder;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+//        } else {
+//            builder = new AlertDialog.Builder(context);
+//        }
+//        builder.setTitle(title)
+//                .setMessage(message)
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // continue with delete
+//                    }
+//                })
+//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // do nothing
+//                    }
+//                })
+//                .setIcon(android.R.drawable.ic_dialog_alert)
+//                .show();
+
+
+
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage("Write your message here.");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+
+    }
+
     public void login_pressed(View view){
 
-        String name = etx_Username.getText().toString();
-        String Paswd = etx_Password.getText().toString();
-        if (name != "" && Paswd != ""){
-
-            Toast toast = Toast.makeText(this, "Loading....", Toast.LENGTH_LONG);
-            toast.show();
-
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.106:27017"));
-            mongoDatabase = mongoClient.getDatabase("SchoolManagement");
-
-            if (mongoDatabase != null){
-                MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
-                FindIterable<Document> iterDoc = coll.find( Filters.eq("name",name));
-                Iterator it = iterDoc.iterator();
-
-            }
-        }
+        DownloadFilesTask task=new DownloadFilesTask();
+        task.execute();
 
 
 
@@ -66,13 +113,44 @@ public class LoginView extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.106:27017"));
+
+            String name = etx_Username.getText().toString();
+            String Paswd = etx_Password.getText().toString();
+            if (!name.equals("") && !Paswd.equals("")) {
+
+            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.1.117:27017"));
             mongoDatabase = mongoClient.getDatabase("SchoolManagement");
 
-            if (mongoDatabase != null){
+            if (mongoDatabase != null) {
+
                 MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
-                coll.find();
-                //coll.drop();
+                Document filter = new Document();
+                filter.put("name", name);
+                filter.put("password", Paswd);
+                FindIterable<Document> iterDoc = coll.find();
+                Document rec = iterDoc.first();
+                String str_name = rec.get("name").toString();
+                String str_password = rec.get("password").toString();
+
+                if (name.equals(str_name) && Paswd.equals(str_password)) {
+
+                    System.out.print(name);
+                    Intent intent = new Intent(LoginView.this, HomeScreen.class);
+                    startActivity(intent);
+
+                }else {
+
+                    alertView("Warning","Record not exixts",LoginView.this);
+                }
+
+
+            }else {
+
+                alertView("Warning","Database error",LoginView.this);
+            }
+        }else {
+
+                alertView("Warning","Please fill all fields",LoginView.this);
             }
             return null;
         }
