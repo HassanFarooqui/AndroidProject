@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.Toast;
 
 import com.mongodb.MongoClient;
@@ -18,11 +16,11 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
+
 import org.bson.Document;
 
-import java.util.Iterator;
-
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 
 public class LoginView extends AppCompatActivity {
@@ -41,37 +39,71 @@ public class LoginView extends AppCompatActivity {
 
         etx_Username = (EditText) findViewById(R.id.etx_username);
         etx_Password = (EditText) findViewById(R.id.etx_password);
-       // etx_Username.setText("admin");
-       // etx_Password.setText("admin");
+        etx_Username.setText("admin");
+        etx_Password.setText("admin");
+
+
+        // alertView("Warning","Please fill all fields",LoginView.this);
 
 
     }
 
-    public void alertView(String title, String message, Context context){
 
-//        AlertDialog.Builder builder;
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-//        } else {
-//            builder = new AlertDialog.Builder(context);
-//        }
-//        builder.setTitle(title)
-//                .setMessage(message)
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // continue with delete
-//                    }
-//                })
-//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // do nothing
-//                    }
-//                })
-//                .setIcon(android.R.drawable.ic_dialog_alert)
-//                .show();
+    public void startLogin() {
+
+        String name = etx_Username.getText().toString();
+        String Paswd = etx_Password.getText().toString();
+
+        if (!name.equals("") && !Paswd.equals("")) {
+
+            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
+
+            try {
+                mongoClient.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mongoDatabase = mongoClient.getDatabase("SchoolManagement");
 
 
+            if (mongoDatabase != null) {
 
+                MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
+
+
+                Document filter = new Document();
+                filter.put("name", name);
+                filter.put("password", Paswd);
+                FindIterable<Document> iterDoc = coll.find();
+                Document rec = iterDoc.first();
+                String str_name = rec.get("name").toString();
+                String str_password = rec.get("password").toString();
+
+                if (name.equals(str_name) && Paswd.equals(str_password)) {
+
+                    System.out.print(name);
+                    Intent intent = new Intent(LoginView.this, HomeScreen.class);
+                    startActivity(intent);
+
+                } else {
+
+                    alertView("Warning", "Record not exixts", LoginView.this);
+                }
+
+
+            } else {
+
+                alertView("Warning", "Database error", LoginView.this);
+                //  Toast.makeText(LoginView.this, "Database error", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+
+            alertView("Warning", "Please fill all fields", LoginView.this);
+            // Toast.makeText(LoginView.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void alertView(String title, String message, Context context) {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setMessage("Write your message here.");
@@ -92,22 +124,99 @@ public class LoginView extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
 
+
+    public void login_pressed(View view) {
+
+      // DownloadFilesTask task = new DownloadFilesTask();
+        //task.execute();
+      DownloadFilesTask2 task2 = new DownloadFilesTask2();
+        try {
+            Boolean b = task2.execute().get();
+            System.out.print(b);
+            Toast.makeText(this,""+b, Toast.LENGTH_SHORT).show();
+            if (b.equals(true)){
+
+                Intent intent = new Intent(LoginView.this, HomeScreen.class);
+                startActivity(intent);
+            }else {
+
+                alertView("title","invalid",LoginView.this);
+               // Toast.makeText(this,""+b, Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void login_pressed(View view){
+    private class DownloadFilesTask2 extends AsyncTask<URL, Integer, Boolean> {
 
-        DownloadFilesTask task=new DownloadFilesTask();
-        task.execute();
+        protected Boolean doInBackground(URL... urls) {
+
+            boolean totalSize = false;
+            String name = etx_Username.getText().toString();
+            String Paswd = etx_Password.getText().toString();
+            if (!name.equals("") && !Paswd.equals("")) {
+
+                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
+                mongoDatabase = mongoClient.getDatabase("SchoolManagement");
+
+                if (mongoDatabase != null) {
+
+                    MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
+
+                    Document filter = new Document();
+                    filter.put("name", name);
+                    filter.put("password", Paswd);
+                    FindIterable<Document> iterDoc = coll.find(filter);
+                    Document rec = iterDoc.first();
+                    if(rec == null){
+
+                        return false;
+
+                    }
 
 
+                    String str_name = rec.get("name").toString();
+                    String str_password = rec.get("password").toString();
 
+                    if (name.equals(str_name) && Paswd.equals(str_password)) {
 
+                        System.out.print(name);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+
+                    } else {
+                        return false;
+
+                    }
+                } else {
+
+                    return false;
+                }
+            }
+
+//        protected void onProgressUpdate(Integer... progress) {
+//            //  setProgressPercent(progress[0]);
+//        }
+//
+//        protected void onPostExecute(Long result) {
+//            //showDialog("Downloaded " + result + " bytes");
+//        }
     }
+
     class DownloadFilesTask extends AsyncTask<Void, Void, Void> {
 
 
@@ -118,42 +227,47 @@ public class LoginView extends AppCompatActivity {
             String Paswd = etx_Password.getText().toString();
             if (!name.equals("") && !Paswd.equals("")) {
 
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.1.117:27017"));
-            mongoDatabase = mongoClient.getDatabase("SchoolManagement");
+                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
+                mongoDatabase = mongoClient.getDatabase("SchoolManagement");
 
-            if (mongoDatabase != null) {
+                if (mongoDatabase != null) {
 
-                MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
-                Document filter = new Document();
-                filter.put("name", name);
-                filter.put("password", Paswd);
-                FindIterable<Document> iterDoc = coll.find();
-                Document rec = iterDoc.first();
-                String str_name = rec.get("name").toString();
-                String str_password = rec.get("password").toString();
+                    MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
 
-                if (name.equals(str_name) && Paswd.equals(str_password)) {
 
-                    System.out.print(name);
-                    Intent intent = new Intent(LoginView.this, HomeScreen.class);
-                    startActivity(intent);
+                    Document filter = new Document();
+                    filter.put("name", name);
+                    filter.put("password", Paswd);
+                    FindIterable<Document> iterDoc = coll.find(filter);
+                    Document rec = iterDoc.first();
+                    String str_name = rec.get("name").toString();
+                    String str_password = rec.get("password").toString();
 
-                }else {
+                    if (name.equals(str_name) && Paswd.equals(str_password)) {
 
-                    alertView("Warning","Record not exixts",LoginView.this);
+                        System.out.print(name);
+                        Intent intent = new Intent(LoginView.this, HomeScreen.class);
+                        startActivity(intent);
+
+                    } else {
+
+                        alertView("Warning", "Record not exixts", LoginView.this);
+                    }
+
+
+                } else {
+
+                    alertView("Warning", "Database error", LoginView.this);
+                    //  Toast.makeText(LoginView.this, "Database error", Toast.LENGTH_SHORT).show();
                 }
+            } else {
 
-
-            }else {
-
-                alertView("Warning","Database error",LoginView.this);
-            }
-        }else {
-
-                alertView("Warning","Please fill all fields",LoginView.this);
+                alertView("Warning", "Please fill all fields", LoginView.this);
+                // Toast.makeText(LoginView.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             }
             return null;
         }
 
     }
+
 }
