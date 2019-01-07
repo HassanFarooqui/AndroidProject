@@ -56,7 +56,7 @@ public class LoginView extends AppCompatActivity {
 
         if (!name.equals("") && !Paswd.equals("")) {
 
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
+            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.1.117:27017"));
 
             try {
                 mongoClient.wait();
@@ -165,7 +165,7 @@ public class LoginView extends AppCompatActivity {
             String Paswd = etx_Password.getText().toString();
             if (!name.equals("") && !Paswd.equals("")) {
 
-                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
+                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.1.117:27017"));
                 mongoDatabase = mongoClient.getDatabase("SchoolManagement");
 
                 if (mongoDatabase != null) {
