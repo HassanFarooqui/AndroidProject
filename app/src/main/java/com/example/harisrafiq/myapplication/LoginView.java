@@ -106,24 +106,25 @@ public class LoginView extends AppCompatActivity {
     public void alertView(String title, String message, Context context) {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Write your message here.");
+        builder1.setTitle(title);
+        builder1.setMessage(message);
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
-                "Yes",
+                "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 });
 
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+//        builder1.setNegativeButton(
+//                "No",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
@@ -133,15 +134,15 @@ public class LoginView extends AppCompatActivity {
 
       DownloadFilesTask2 task2 = new DownloadFilesTask2();
         try {
-            Boolean b = task2.execute().get();
-            Toast.makeText(this,""+b, Toast.LENGTH_SHORT).show();
-            if (b.equals(true)){
+            ErrorClass result = task2.execute().get();
+           // Toast.makeText(this,""+result.error_message, Toast.LENGTH_SHORT).show();
+            if (result.result.equals(true)){
 
                 Intent intent = new Intent(LoginView.this, HomeScreen.class);
                 startActivity(intent);
             }else {
 
-                alertView("title","invalid",LoginView.this);
+                alertView("Error",result.error_message,LoginView.this);
                // Toast.makeText(this,""+b, Toast.LENGTH_SHORT).show();
             }
 
@@ -153,9 +154,9 @@ public class LoginView extends AppCompatActivity {
 
     }
 
-    private class DownloadFilesTask2 extends AsyncTask<URL, Integer, Boolean> {
+    private class DownloadFilesTask2 extends AsyncTask<URL, Integer, ErrorClass> {
 
-        protected Boolean doInBackground(URL... urls) {
+        protected ErrorClass doInBackground(URL... urls) {
 
             boolean totalSize = false;
             String name = etx_Username.getText().toString();
@@ -176,7 +177,10 @@ public class LoginView extends AppCompatActivity {
                     Document rec = iterDoc.first();
                     if(rec == null){
 
-                        return false;
+                        ErrorClass err0r = new ErrorClass();
+                        err0r.result = false;
+                        err0r.error_message = "record not exit";
+                        return err0r;
 
                     }
 
@@ -188,20 +192,32 @@ public class LoginView extends AppCompatActivity {
 
                         System.out.print(name);
 
-                        return true;
+                        ErrorClass err0r = new ErrorClass();
+                        err0r.result = true;
+                        err0r.error_message = "success";
+                        return err0r;
 
                     } else {
 
-                        return false;
+                        ErrorClass err0r = new ErrorClass();
+                        err0r.result = false;
+                        err0r.error_message = "Invalid Credentials";
+                        return err0r;
                     }
 
                     } else {
-                        return false;
+                    ErrorClass err0r = new ErrorClass();
+                    err0r.result = false;
+                    err0r.error_message = "Database not found";
+                    return err0r;
 
                     }
                 } else {
 
-                    return false;
+                ErrorClass err0r = new ErrorClass();
+                err0r.result = false;
+                err0r.error_message = "Please fill all fields";
+                return err0r;
                 }
             }
 

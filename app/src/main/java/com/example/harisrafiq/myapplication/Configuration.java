@@ -7,3 +7,4 @@ public class Configuration {
   static String tbl_userdata = "UserData";
 
 }
+
