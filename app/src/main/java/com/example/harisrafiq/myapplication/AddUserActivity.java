@@ -1,8 +1,12 @@
 package com.example.harisrafiq.myapplication;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import com.mongodb.MongoClient;
@@ -14,7 +18,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.net.URL;
-
+import java.util.concurrent.ExecutionException;
 
 
 public class AddUserActivity extends AppCompatActivity {
@@ -32,66 +36,94 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
-        name = (EditText) findViewById(R.id.etx_username);
+        name = (EditText) findViewById(R.id.etx_name);
         password = (EditText) findViewById(R.id.etx_password);
         id = (EditText) findViewById(R.id.etx_id);
         email = (EditText) findViewById(R.id.etx_email);
 
+    }
+    public void alertView(String title, String message, Context context) {
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle(title);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+//        builder1.setNegativeButton(
+//                "No",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+    public void saveUser(View view){
+
+        InsertUserData task = new InsertUserData();
+        try {
+            ErrorClass r = task.execute().get();
+            alertView("Message",r.error_message,AddUserActivity.this);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
+    private class InsertUserData extends AsyncTask<URL, Integer, ErrorClass> {
 
-    private class InsertUserData extends AsyncTask<URL, Integer, Boolean> {
+        protected ErrorClass doInBackground(URL... urls) {
 
-        protected Boolean doInBackground(URL... urls) {
 
-            boolean totalSize = false;
-              String username = name.getText().toString();
+             String username = name.getText().toString();
              String Paswd = password.getText().toString();
              String email_user = email.getText().toString();
              String roleid = id.getText().toString();
 
-            if (!username.equals("") && !Paswd.equals("") && !roleid.equals("") && email_user.equals("")) {
+            if (!username.equals("") && !Paswd.equals("") && !roleid.equals("") && !email_user.equals("")) {
 
-                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
-                mongoDatabase = mongoClient.getDatabase("SchoolManagement");
+                mongoClient = new MongoClient(new MongoClientURI(Configuration.databaseAddress));
+                mongoDatabase = mongoClient.getDatabase(Configuration.databaseName);
 
                 if (mongoDatabase != null) {
 
-                    MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
+                    MongoCollection<Document> UserDataInsert = mongoDatabase.getCollection(Configuration.tbl_userdata);
 
-                    Document filter = new Document();
-                    filter.put("name", name);
-                    filter.put("password", Paswd);
-                    FindIterable<Document> iterDoc = coll.find(filter);
-                    Document rec = iterDoc.first();
-                    if (rec == null) {
+                    Document newUser = new Document();
+                    newUser.put("name", username);
+                    newUser.put("password", Paswd);
+                    newUser.put("id",roleid);
+                    newUser.put("email",email_user);
 
-                        return false;
-
-                    }
-
-
-                    String str_name = rec.get("name").toString();
-                    String str_password = rec.get("password").toString();
-
-                    if (name.equals(str_name) && Paswd.equals(str_password)) {
-
-                        System.out.print(name);
-
-                        return true;
-
-                    } else {
-
-                        return false;
-                    }
+                    UserDataInsert.insertOne(newUser);
+                    ErrorClass err0r = new ErrorClass();
+                    err0r.result = true;
+                    err0r.error_message = "Add User Successfully";
+                    return err0r;
 
                 } else {
-                    return false;
+                    ErrorClass err0r = new ErrorClass();
+                    err0r.result = false;
+                    err0r.error_message = "Database not found";
+                    return err0r;
 
                 }
             } else {
 
-                return false;
+                ErrorClass err0r = new ErrorClass();
+                err0r.result = false;
+                err0r.error_message = "Please Fill all fields";
+                return err0r;
             }
         }
 

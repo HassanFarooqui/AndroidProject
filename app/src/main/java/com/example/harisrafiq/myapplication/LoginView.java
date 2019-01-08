@@ -158,7 +158,7 @@ public class LoginView extends AppCompatActivity {
 
         protected ErrorClass doInBackground(URL... urls) {
 
-            boolean totalSize = false;
+
             String name = etx_Username.getText().toString();
             String Paswd = etx_Password.getText().toString();
             if (!name.equals("") && !Paswd.equals("")) {
