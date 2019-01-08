@@ -131,12 +131,9 @@ public class LoginView extends AppCompatActivity {
 
     public void login_pressed(View view) {
 
-      // DownloadFilesTask task = new DownloadFilesTask();
-        //task.execute();
       DownloadFilesTask2 task2 = new DownloadFilesTask2();
         try {
             Boolean b = task2.execute().get();
-            System.out.print(b);
             Toast.makeText(this,""+b, Toast.LENGTH_SHORT).show();
             if (b.equals(true)){
 
@@ -165,12 +162,12 @@ public class LoginView extends AppCompatActivity {
             String Paswd = etx_Password.getText().toString();
             if (!name.equals("") && !Paswd.equals("")) {
 
-                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
-                mongoDatabase = mongoClient.getDatabase("SchoolManagement");
+                mongoClient = new MongoClient(new MongoClientURI(Configuration.databaseAddress));
+                mongoDatabase = mongoClient.getDatabase(Configuration.databaseName);
 
                 if (mongoDatabase != null) {
 
-                    MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
+                    MongoCollection<Document> coll = mongoDatabase.getCollection(Configuration.tbl_userdata);
 
                     Document filter = new Document();
                     filter.put("name", name);
@@ -207,66 +204,6 @@ public class LoginView extends AppCompatActivity {
                     return false;
                 }
             }
-
-//        protected void onProgressUpdate(Integer... progress) {
-//            //  setProgressPercent(progress[0]);
-//        }
-//
-//        protected void onPostExecute(Long result) {
-//            //showDialog("Downloaded " + result + " bytes");
-//        }
-    }
-
-    class DownloadFilesTask extends AsyncTask<Void, Void, Void> {
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            String name = etx_Username.getText().toString();
-            String Paswd = etx_Password.getText().toString();
-            if (!name.equals("") && !Paswd.equals("")) {
-
-                mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
-                mongoDatabase = mongoClient.getDatabase("SchoolManagement");
-
-                if (mongoDatabase != null) {
-
-                    MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
-
-
-                    Document filter = new Document();
-                    filter.put("name", name);
-                    filter.put("password", Paswd);
-                    FindIterable<Document> iterDoc = coll.find(filter);
-                    Document rec = iterDoc.first();
-                    String str_name = rec.get("name").toString();
-                    String str_password = rec.get("password").toString();
-
-                    if (name.equals(str_name) && Paswd.equals(str_password)) {
-
-                        System.out.print(name);
-                        Intent intent = new Intent(LoginView.this, HomeScreen.class);
-                        startActivity(intent);
-
-                    } else {
-
-                        alertView("Warning", "Record not exixts", LoginView.this);
-                    }
-
-
-                } else {
-
-                    alertView("Warning", "Database error", LoginView.this);
-                    //  Toast.makeText(LoginView.this, "Database error", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-
-                alertView("Warning", "Please fill all fields", LoginView.this);
-                // Toast.makeText(LoginView.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-            }
-            return null;
-        }
 
     }
 

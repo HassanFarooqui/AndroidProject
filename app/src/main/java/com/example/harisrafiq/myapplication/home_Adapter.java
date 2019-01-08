@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 //import com.example.sgi.recyclerview.MainActivity;
 //import com.example.sgi.recyclerview.R;
+import com.example.harisrafiq.myapplication.HomeScreen;
+import com.example.harisrafiq.myapplication.R;
 
 import java.util.ArrayList;
 
@@ -90,6 +93,12 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     break;
                 case "Add User":
                     Toast.makeText(v.getContext(), "Ptm Request CLicked" + pos, Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(context,AddUserActivity.class);
+                    context.startActivity(intent);
+
+
+
+
                     break;
             }
 
