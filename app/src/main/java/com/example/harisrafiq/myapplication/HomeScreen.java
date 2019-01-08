@@ -21,7 +21,7 @@ public class HomeScreen extends AppCompatActivity {
             "Fee Chalans",
             "Assessment",
             "Time table",
-            "Ptm Request"};
+            "Add User"};
 
     public static  int[] btnImage = {
             R.drawable.examicon,

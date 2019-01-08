@@ -88,7 +88,7 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                 case "Time table":
                     Toast.makeText(v.getContext(), "Time table CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
-                case "Ptm Request":
+                case "Add User":
                     Toast.makeText(v.getContext(), "Ptm Request CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
             }
