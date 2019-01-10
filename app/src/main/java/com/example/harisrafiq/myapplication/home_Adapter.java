@@ -1,7 +1,9 @@
 package com.example.harisrafiq.myapplication;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,8 +64,11 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
             imageOfInstitution = itemView.findViewById(R.id.intitution_image);
         }
 
+
+
         public void onClick(View v) {
             int pos = (Integer) v.getTag();
+            Intent intent;
 
             switch (nameOfInstitute.getText().toString()){
 
@@ -72,6 +77,9 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     break;
                 case "Diary":
                     Toast.makeText(v.getContext(), "Diary CLicked" + pos, Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context,Assignment.class);
+                    context.startActivity(intent);
+
                     break;
                 case "Attendance":
                     Toast.makeText(v.getContext(), "Attendance CLicked" + pos, Toast.LENGTH_SHORT).show();
@@ -93,11 +101,8 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     break;
                 case "Add User":
                     Toast.makeText(v.getContext(), "Ptm Request CLicked" + pos, Toast.LENGTH_SHORT).show();
-                   Intent intent = new Intent(context,AddUserActivity.class);
+                    intent = new Intent(context,AddUserActivity.class);
                     context.startActivity(intent);
-
-
-
 
                     break;
             }

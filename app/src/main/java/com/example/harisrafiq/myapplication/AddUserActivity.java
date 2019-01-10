@@ -84,7 +84,6 @@ public class AddUserActivity extends AppCompatActivity {
 
         protected ErrorClass doInBackground(URL... urls) {
 
-
              String username = name.getText().toString();
              String Paswd = password.getText().toString();
              String email_user = email.getText().toString();
