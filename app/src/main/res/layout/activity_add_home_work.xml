@@ -33,5 +33,31 @@
 
     </Spinner>
 
+    <EditText
+        android:id="@+id/etxHomeWork"
+        android:layout_width="wrap_content"
+        android:layout_height="217dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/classSpinner" />
+
+    <Button
+        android:id="@+id/btnSaveHomeWork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="SaveHomeWork"
+        android:text="Save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etxHomeWork" />
+
 
 </android.support.constraint.ConstraintLayout>
