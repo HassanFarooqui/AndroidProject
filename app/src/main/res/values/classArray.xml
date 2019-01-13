@@ -12,4 +12,20 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+
+
+    <string-array name="DAYS">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+
+
+
+
 </resources>
