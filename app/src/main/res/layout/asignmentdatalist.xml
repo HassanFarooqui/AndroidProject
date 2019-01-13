@@ -25,7 +25,7 @@
 
     <TextView
         android:text="Discription"
-        android:id="@+id/txtvDiscription"
+        android:id="@+id/txtvHomeWorkDiscription"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
     </TextView>

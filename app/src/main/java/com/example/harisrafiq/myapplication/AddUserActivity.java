@@ -82,6 +82,28 @@ public class AddUserActivity extends AppCompatActivity {
     }
     private class InsertUserData extends AsyncTask<URL, Integer, ErrorClass> {
 
+
+        protected Boolean idIsValid(String id){
+            Boolean result = false;
+            String ad = id.substring(0,2);
+            if(ad.equals(Configuration.checkAdmin)){
+
+                result = true;
+            }
+
+            String parent = id.substring(0,1);
+            String[] arr = Configuration.checkParent;
+            for (int i = 0;i < arr.length; i++){
+
+                if (arr[i].equals(parent)){
+
+                    result = true;
+                    break;
+                }
+
+            }
+            return result;
+        }
         protected ErrorClass doInBackground(URL... urls) {
 
              String username = name.getText().toString();
@@ -89,7 +111,19 @@ public class AddUserActivity extends AppCompatActivity {
              String email_user = email.getText().toString();
              String roleid = id.getText().toString();
 
+
+
             if (!username.equals("") && !Paswd.equals("") && !roleid.equals("") && !email_user.equals("")) {
+
+
+                if (idIsValid(roleid) == false){
+
+                    ErrorClass err0r = new ErrorClass();
+                    err0r.result = false;
+                    err0r.error_message = "You Enter Invalid ID";
+                    return err0r;
+
+                }
 
                 mongoClient = new MongoClient(new MongoClientURI(Configuration.databaseAddress));
                 mongoDatabase = mongoClient.getDatabase(Configuration.databaseName);

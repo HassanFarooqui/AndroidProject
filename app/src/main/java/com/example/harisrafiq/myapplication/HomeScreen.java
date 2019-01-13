@@ -41,6 +41,30 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        if (Configuration.user.equals(Configuration.parent)){
+            String[] activities = { "Notifications",
+                    "Diary",
+                    "Attendance",
+                    "School",
+                    "Periodical",
+                    "Fee Chalans",
+                    "Assessment",
+                    "Time table"};
+            btnName = activities;
+
+             int[] Images = {
+                    R.drawable.examicon,
+                    R.drawable.classicon,
+                    R.drawable.aricon,
+                    R.drawable.homeicon,
+                    R.drawable.profileicon,
+                    R.drawable.classicon,
+                    R.drawable.aricon,
+                    R.drawable.homeicon};
+             btnImage = Images;
+
+        }
+
         mRecyclerView = findViewById(R.id.homeRV);
         mAdapter = new home_Adapter(this,getData(btnName,btnImage));
         mRecyclerView.setAdapter(mAdapter);
@@ -49,7 +73,7 @@ public class HomeScreen extends AppCompatActivity {
 
     public static ArrayList<homeMenuBtn> getData(String[] btnName , int[] btnImage ) {
         ArrayList<homeMenuBtn> data1 = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < btnName.length; i++) {
             homeMenuBtn current1 = new homeMenuBtn();
             current1.nameOfhomeMenuBtn = btnName[i];
             current1.imageOfhomeMenuBtn = btnImage[i];

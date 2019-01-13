@@ -35,32 +35,26 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
 
-    private final static String classNumber[] = {};
-    private final static String datelist[] = {};
-    private final static String homework[] = {};
-
-
+    private final static ArrayList<String> classNumber = new ArrayList<String>();
+    private final static ArrayList<String> datelist = new ArrayList<String>();
+    private final static ArrayList<String> homework = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment);
-      //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
 
         listView = (ListView) findViewById(R.id.asignmentlist);
-
-//        lviewAdapter = new AssignmentAdapter(this, classNumber, datelist);
-//
-//        System.out.println("adapter => "+lviewAdapter.getCount());
-//
-//        listView.setAdapter(lviewAdapter);
-
         listView.setOnItemClickListener(this);
 
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        if (Configuration.user.equals(Configuration.parent)){
+            fab.hide();
+        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,11 +74,10 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
             if (res.result == true){
 
                 Toast.makeText(this,"download data", Toast.LENGTH_SHORT).show();
-                lviewAdapter = new AssignmentAdapter(this, classNumber, datelist);
-
+                lviewAdapter = new AssignmentAdapter(this,datelist,classNumber,homework);
                 System.out.println("adapter => "+lviewAdapter.getCount());
-
                 listView.setAdapter(lviewAdapter);
+
             }
 
 
@@ -121,7 +114,7 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
 
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
         // TODO Auto-generated method stub
-        Toast.makeText(this,"Title => "+classNumber[position]+"=> n Description"+datelist[position], Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"Title => "+classNumber[position]+"=> n Description"+datelist[position], Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -140,8 +133,15 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
                 if (mongoDatabase != null) {
 
                     MongoCollection<Document> coll = mongoDatabase.getCollection(Configuration.tbl_Homework);
-
                     FindIterable<Document> iterDoc = coll.find();
+
+                    if (Configuration.user.equals(Configuration.parent)){
+
+                        Document filter = new Document();
+                        filter.put("class_id",Configuration.classNumber);
+                        iterDoc = coll.find(filter);
+
+                    }
                     MongoCursor cursor = iterDoc.iterator();
 
                     try {
@@ -155,9 +155,9 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
                            String hm = doc.getString("homework");
                             Log.d(date,classid);
 
-//                           classNumber[count] = classid;
-//                           datelist[count] = date;
-//                           homework[count] = hm;
+                           classNumber.add(classid);
+                           datelist.add(date);
+                           homework.add(hm);
                            count = count + 1;
 
                         }

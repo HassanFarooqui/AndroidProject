@@ -39,69 +39,14 @@ public class LoginView extends AppCompatActivity {
 
         etx_Username = (EditText) findViewById(R.id.etx_username);
         etx_Password = (EditText) findViewById(R.id.etx_password);
-        etx_Username.setText("admin");
+        etx_Username.setText("ad01");
         etx_Password.setText("admin");
-
 
         // alertView("Warning","Please fill all fields",LoginView.this);
 
 
     }
 
-
-    public void startLogin() {
-
-        String name = etx_Username.getText().toString();
-        String Paswd = etx_Password.getText().toString();
-
-        if (!name.equals("") && !Paswd.equals("")) {
-
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.0.109:27017"));
-
-            try {
-                mongoClient.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mongoDatabase = mongoClient.getDatabase("SchoolManagement");
-
-
-            if (mongoDatabase != null) {
-
-                MongoCollection<Document> coll = mongoDatabase.getCollection("UserData");
-
-
-                Document filter = new Document();
-                filter.put("name", name);
-                filter.put("password", Paswd);
-                FindIterable<Document> iterDoc = coll.find();
-                Document rec = iterDoc.first();
-                String str_name = rec.get("name").toString();
-                String str_password = rec.get("password").toString();
-
-                if (name.equals(str_name) && Paswd.equals(str_password)) {
-
-                    System.out.print(name);
-                    Intent intent = new Intent(LoginView.this, HomeScreen.class);
-                    startActivity(intent);
-
-                } else {
-
-                    alertView("Warning", "Record not exixts", LoginView.this);
-                }
-
-
-            } else {
-
-                alertView("Warning", "Database error", LoginView.this);
-                //  Toast.makeText(LoginView.this, "Database error", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-
-            alertView("Warning", "Please fill all fields", LoginView.this);
-            // Toast.makeText(LoginView.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public void alertView(String title, String message, Context context) {
 
@@ -156,6 +101,35 @@ public class LoginView extends AppCompatActivity {
 
     private class DownloadFilesTask2 extends AsyncTask<URL, Integer, ErrorClass> {
 
+
+
+        protected void checkUserRole(String id){
+
+            String ad = id.substring(0,2);
+
+            if(ad.equals(Configuration.checkAdmin)){
+
+                Configuration.user = Configuration.admin;
+
+
+            }
+
+            String parent = id.substring(0,1);
+            String[] arr = Configuration.checkParent;
+
+            for (int i = 0;i < arr.length; i++){
+
+                if (arr[i].equals(parent)){
+
+                   Configuration.user = Configuration.parent;
+                   Configuration.classNumber = parent;
+                    break;
+                }
+
+            }
+
+        }
+
         protected ErrorClass doInBackground(URL... urls) {
 
 
@@ -171,7 +145,7 @@ public class LoginView extends AppCompatActivity {
                     MongoCollection<Document> coll = mongoDatabase.getCollection(Configuration.tbl_userdata);
 
                     Document filter = new Document();
-                    filter.put("name", name);
+                    filter.put("id", name);
                     filter.put("password", Paswd);
                     FindIterable<Document> iterDoc = coll.find(filter);
                     Document rec = iterDoc.first();
@@ -185,13 +159,13 @@ public class LoginView extends AppCompatActivity {
                     }
 
 
-                    String str_name = rec.get("name").toString();
+                    String str_name = rec.get("id").toString();
                     String str_password = rec.get("password").toString();
+
 
                     if (name.equals(str_name) && Paswd.equals(str_password)) {
 
-                        System.out.print(name);
-
+                        checkUserRole(str_name);
                         ErrorClass err0r = new ErrorClass();
                         err0r.result = true;
                         err0r.error_message = "success";

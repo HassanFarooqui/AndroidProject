@@ -7,22 +7,26 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class AssignmentAdapter extends BaseAdapter
 {
     Activity context;
-    String title[];
-    String description[];
+    ArrayList<String> date;
+    ArrayList<String> class_number;
+    ArrayList<String> homeworkDes;
 
-    public AssignmentAdapter(Activity context, String[] title, String[] description) {
+    public AssignmentAdapter(Activity context, ArrayList<String> date, ArrayList<String> classnumber,ArrayList<String> homework) {
         super();
         this.context = context;
-        this.title = title;
-        this.description = description;
+        this.date = date;
+        this.class_number = classnumber;
+        this.homeworkDes = homework;
     }
 
     public int getCount() {
         // TODO Auto-generated method stub
-        return title.length;
+        return date.size();
     }
 
     public Object getItem(int position) {
@@ -38,6 +42,7 @@ public class AssignmentAdapter extends BaseAdapter
     private class ViewHolder {
         TextView txtViewTitle;
         TextView txtViewDescription;
+        TextView txtHomeDes;
     }
 
     public View getView(int position, View convertView, ViewGroup parent)
@@ -52,6 +57,7 @@ public class AssignmentAdapter extends BaseAdapter
             holder = new ViewHolder();
             holder.txtViewTitle = (TextView) convertView.findViewById(R.id.txtvClass);
             holder.txtViewDescription = (TextView) convertView.findViewById(R.id.txtvDate);
+            holder.txtHomeDes = (TextView) convertView.findViewById(R.id.txtvHomeWorkDiscription);
             convertView.setTag(holder);
         }
         else
@@ -59,8 +65,9 @@ public class AssignmentAdapter extends BaseAdapter
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.txtViewTitle.setText(title[position]);
-        holder.txtViewDescription.setText(description[position]);
+        holder.txtViewTitle.setText(date.get(position));
+        holder.txtViewDescription.setText(class_number.get(position));
+        holder.txtHomeDes.setText(homeworkDes.get(position));
 
         return convertView;
     }
