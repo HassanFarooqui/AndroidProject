@@ -26,7 +26,8 @@
         <activity android:name=".AddUserActivity" />
         <activity android:name=".Assignment" />
         <activity android:name=".AddHomeWork" />
-        <activity android:name=".DayTimeTable"></activity>
+        <activity android:name=".DayTimeTable" />
+        <activity android:name=".TimeTableList"></activity>
     </application>
 
 </manifest>

@@ -98,6 +98,9 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     break;
                 case "Time table":
                     Toast.makeText(v.getContext(), "Time table CLicked" + pos, Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context,TimeTableList.class);
+                    context.startActivity(intent);
+
                     break;
                 case "Add User":
                     Toast.makeText(v.getContext(), "Ptm Request CLicked" + pos, Toast.LENGTH_SHORT).show();
