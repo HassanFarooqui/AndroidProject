@@ -48,7 +48,7 @@ public class TimeTableListAdaptor extends BaseAdapter
 
         if (convertView == null)
         {
-            convertView = inflater.inflate(R.layout.content_timetablelist, null);
+            convertView = inflater.inflate(R.layout.timetablecell, null);
             holder = new ViewHolder();
             holder.txtViewTitle = (TextView) convertView.findViewById(R.id.classNameTxtView);
             holder.txtViewDescription = (TextView) convertView.findViewById(R.id.DayTextView);
