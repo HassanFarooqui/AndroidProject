@@ -25,7 +25,20 @@
     </string-array>
 
 
+    <string-array name="MonthName">
 
+        <item>January</item>
+        <item>Febury</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>Augest</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
 
-
+    </string-array>
 </resources>

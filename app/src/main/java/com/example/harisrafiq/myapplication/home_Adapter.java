@@ -76,7 +76,7 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     Toast.makeText(v.getContext(), "Notifications CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
                 case "Diary":
-                    Toast.makeText(v.getContext(), "Diary CLicked" + pos, Toast.LENGTH_SHORT).show();
+
                     intent = new Intent(context,Assignment.class);
                     context.startActivity(intent);
 
@@ -91,13 +91,16 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     Toast.makeText(v.getContext(), "Periodical CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
                 case "Fee Chalans":
-                    Toast.makeText(v.getContext(), "Fee Chalans CLicked" + pos, Toast.LENGTH_SHORT).show();
+
+                    intent = new Intent(context,FeeChallan.class);
+                    context.startActivity(intent);
                     break;
                 case "Assessment":
+
                     Toast.makeText(v.getContext(), "Assessment CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
                 case "Time table":
-                    Toast.makeText(v.getContext(), "Time table CLicked" + pos, Toast.LENGTH_SHORT).show();
+
                     intent = new Intent(context,TimeTableList.class);
                     context.startActivity(intent);
 
