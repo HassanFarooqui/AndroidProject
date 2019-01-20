@@ -7,13 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class TimeTableListAdaptor extends BaseAdapter
 {
     Activity context;
-    String title[];
-    String description[];
+    ArrayList<String> title = new ArrayList<String>();
 
-    public TimeTableListAdaptor(Activity context, String[] title, String[] description) {
+    ArrayList<String> description = new ArrayList<String>();
+
+    public TimeTableListAdaptor(Activity context, ArrayList<String> title, ArrayList<String> description) {
         super();
         this.context = context;
         this.title = title;
@@ -22,7 +25,7 @@ public class TimeTableListAdaptor extends BaseAdapter
 
     public int getCount() {
         // TODO Auto-generated method stub
-        return title.length;
+        return title.size();
     }
 
     public Object getItem(int position) {
@@ -59,8 +62,8 @@ public class TimeTableListAdaptor extends BaseAdapter
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.txtViewTitle.setText(title[position]);
-        holder.txtViewDescription.setText(description[position]);
+        holder.txtViewTitle.setText(title.get(position));
+        holder.txtViewDescription.setText(description.get(position));
 
         return convertView;
     }
