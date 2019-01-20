@@ -159,14 +159,12 @@ public class TimeTableList extends AppCompatActivity implements AdapterView.OnIt
                          String classDay = "Class = " +classid+ " Day = "+day;
                         classandday.add(classDay);
                         String p = "\n";
-                        for (int i = 0;i<list.size();i++){
+                        for (int i = 0;i < list.size();i++){
 
                              p += list.get(i) + "\n";
 
-
                         }
                         timetablestr.add(p);
-
                         count = count + 1;
 
                     }
