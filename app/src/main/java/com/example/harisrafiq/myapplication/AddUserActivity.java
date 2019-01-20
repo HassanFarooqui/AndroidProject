@@ -54,16 +54,11 @@ public class AddUserActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        finish();
                     }
                 });
 
-//        builder1.setNegativeButton(
-//                "No",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
+
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }

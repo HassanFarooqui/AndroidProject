@@ -60,8 +60,8 @@
         android:hint="Password" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:text="login"
         android:id="@+id/btn_login"
         android:onClick="login_pressed"
@@ -71,8 +71,8 @@
         />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:text="Cancel"
         android:id="@+id/btn_cancel"
         android:layout_alignParentBottom="true"

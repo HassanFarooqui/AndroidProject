@@ -35,15 +35,6 @@ public class TimeTableList extends AppCompatActivity implements AdapterView.OnIt
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
 
-//     String month[] = {"January","February","March","April","May",
-//            "June","July","August","September","October","November","December"};
-//
-//    String number[] = {"Month\n1", "Month - 2","Month - 3",
-//            "Month - 4","Month - 5","Month - 6",
-//            "Month - 7","Month - 8","Month - 9",
-//            "Month - 10","Month - 11","Month - 12"};
-
-
     ArrayList<String> classandday = new ArrayList<String>();
     ArrayList<String> timetablestr = new ArrayList<String>();
 
@@ -51,12 +42,11 @@ public class TimeTableList extends AppCompatActivity implements AdapterView.OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_time_table_list);
-
         listView = (ListView) findViewById(R.id.timetablelist);
-
-
         listView.setOnItemClickListener(this);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (Configuration.user.equals(Configuration.parent)){
             fab.hide();
@@ -76,6 +66,12 @@ public class TimeTableList extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         DownloadAllTimeTableList task = new DownloadAllTimeTableList();
         try {
             ErrorClass respose = task.execute().get();
@@ -131,6 +127,8 @@ public class TimeTableList extends AppCompatActivity implements AdapterView.OnIt
 
             mongoClient = new MongoClient(new MongoClientURI(Configuration.databaseAddress));
             mongoDatabase = mongoClient.getDatabase(Configuration.databaseName);
+            classandday.clear();
+            timetablestr.clear();
 
 
             if (mongoDatabase != null) {

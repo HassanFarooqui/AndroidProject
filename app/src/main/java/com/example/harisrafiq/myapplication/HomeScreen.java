@@ -4,9 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-//import com.example.sgi.recyclerview.adapters.home_Adapter;
-
 import java.util.ArrayList;
 
 
@@ -16,7 +13,7 @@ public class HomeScreen extends AppCompatActivity {
             "Notifications",
             "Diary",
             "Attendance",
-            "School",
+            "Result",
             "Periodical",
             "Fee Chalans",
             "Assessment",
@@ -27,7 +24,7 @@ public class HomeScreen extends AppCompatActivity {
             R.drawable.examicon,
             R.drawable.classicon,
             R.drawable.aricon,
-            R.drawable.homeicon,
+            R.drawable.examicon,
             R.drawable.profileicon,
             R.drawable.classicon,
             R.drawable.aricon,

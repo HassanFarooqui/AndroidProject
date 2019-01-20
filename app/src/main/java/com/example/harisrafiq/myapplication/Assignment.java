@@ -35,9 +35,9 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
 
-    private final static ArrayList<String> classNumber = new ArrayList<String>();
-    private final static ArrayList<String> datelist = new ArrayList<String>();
-    private final static ArrayList<String> homework = new ArrayList<String>();
+    private  ArrayList<String> classNumber = new ArrayList<String>();
+    private  ArrayList<String> datelist = new ArrayList<String>();
+    private  ArrayList<String> homework = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +68,17 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         DownloadHomeWork task = new DownloadHomeWork();
         try {
             ErrorClass res = task.execute().get();
             if (res.result == true){
 
-                Toast.makeText(this,"download data", Toast.LENGTH_SHORT).show();
                 lviewAdapter = new AssignmentAdapter(this,datelist,classNumber,homework);
-                System.out.println("adapter => "+lviewAdapter.getCount());
                 listView.setAdapter(lviewAdapter);
 
             }
@@ -86,8 +89,6 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -143,6 +144,9 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
 
                     }
                     MongoCursor cursor = iterDoc.iterator();
+                    classNumber.clear();
+                    datelist.clear();
+                    homework.clear();
 
                     try {
                          int count = 0;
