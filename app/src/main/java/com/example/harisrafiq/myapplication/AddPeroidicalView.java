@@ -1,5 +1,6 @@
 package com.example.harisrafiq.myapplication;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -20,6 +22,10 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class AddPeroidicalView extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -30,6 +36,9 @@ public class AddPeroidicalView extends AppCompatActivity implements AdapterView.
     Spinner spin_classNumber;
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
+    final Calendar myCalendar = Calendar.getInstance();
+
+    EditText etraTextbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +54,80 @@ public class AddPeroidicalView extends AppCompatActivity implements AdapterView.
         classadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_classNumber.setAdapter(classadapter);
         spin_classNumber.setOnItemSelectedListener(this);
-    }
 
+        firstterm.setKeyListener(null);
+        secondterm.setKeyListener(null);
+        thirdterm.setKeyListener(null);
+
+        firstterm.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                etraTextbox = firstterm;
+                new DatePickerDialog(AddPeroidicalView.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        secondterm.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                etraTextbox = secondterm;
+                new DatePickerDialog(AddPeroidicalView.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        thirdterm.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                etraTextbox = thirdterm;
+                new DatePickerDialog(AddPeroidicalView.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+    }
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+
+    };
+
+    private void updateLabel() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+      etraTextbox.setText(sdf.format(myCalendar.getTime()));
+    }
     public void SavePeroidical(View view){
+
+        SavePeroidicals task = new SavePeroidicals();
+        try {
+            ErrorClass error = task.execute().get();
+            if (error.result.equals(true)){
+
+                alertView("Success",error.error_message,this);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
