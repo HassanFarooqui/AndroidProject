@@ -84,11 +84,14 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                 case "Attendance":
                     Toast.makeText(v.getContext(), "Attendance CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
-                case "School":
+                case "Result":
                     Toast.makeText(v.getContext(), "School CLicked" + pos, Toast.LENGTH_SHORT).show();
                     break;
                 case "Periodical":
-                    Toast.makeText(v.getContext(), "Periodical CLicked" + pos, Toast.LENGTH_SHORT).show();
+
+                    intent = new Intent(context,Peroidical.class);
+                    context.startActivity(intent);
+
                     break;
                 case "Fee Chalans":
 

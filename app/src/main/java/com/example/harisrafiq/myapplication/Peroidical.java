@@ -49,7 +49,7 @@ public class Peroidical extends AppCompatActivity {
 
         );
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.feesFab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.peroidicalFab);
 
         if (Configuration.user.equals(Configuration.parent)){
             fab.hide();
@@ -59,7 +59,7 @@ public class Peroidical extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent inten = new Intent(Peroidical.this,AddFeesChallan.class);
+                Intent inten = new Intent(Peroidical.this,AddPeroidicalView.class);
                 startActivity(inten);
 
             }
