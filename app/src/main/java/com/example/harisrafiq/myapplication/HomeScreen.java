@@ -42,7 +42,7 @@ public class HomeScreen extends AppCompatActivity {
             String[] activities = { "Notifications",
                     "Diary",
                     "Attendance",
-                    "School",
+                    "Result",
                     "Periodical",
                     "Fee Chalans",
                     "Assessment",

@@ -159,8 +159,8 @@ public class Assignment extends AppCompatActivity implements AdapterView.OnItemC
                            String hm = doc.getString("homework");
                             Log.d(date,classid);
 
-                           classNumber.add(classid);
-                           datelist.add(date);
+                           classNumber.add("Class = "+classid);
+                           datelist.add("Date = "+date);
                            homework.add(hm);
                            count = count + 1;
 
