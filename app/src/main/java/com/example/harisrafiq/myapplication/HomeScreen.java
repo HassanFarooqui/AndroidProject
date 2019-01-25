@@ -16,7 +16,6 @@ public class HomeScreen extends AppCompatActivity {
             "Result",
             "Periodical",
             "Fee Chalans",
-            "Assessment",
             "Time table",
             "Add User"};
 
@@ -27,7 +26,6 @@ public class HomeScreen extends AppCompatActivity {
             R.drawable.examicon,
             R.drawable.profileicon,
             R.drawable.classicon,
-            R.drawable.aricon,
             R.drawable.homeicon,
             R.drawable.profileicon};
 
@@ -45,7 +43,6 @@ public class HomeScreen extends AppCompatActivity {
                     "Result",
                     "Periodical",
                     "Fee Chalans",
-                    "Assessment",
                     "Time table"};
             btnName = activities;
 
@@ -56,7 +53,6 @@ public class HomeScreen extends AppCompatActivity {
                     R.drawable.homeicon,
                     R.drawable.profileicon,
                     R.drawable.classicon,
-                    R.drawable.aricon,
                     R.drawable.homeicon};
              btnImage = Images;
 
