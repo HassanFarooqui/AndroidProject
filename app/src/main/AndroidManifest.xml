@@ -31,7 +31,8 @@
         <activity android:name=".FeeChallan" />
         <activity android:name=".AddFeesChallan" />
         <activity android:name=".Peroidical" />
-        <activity android:name=".AddPeroidicalView"></activity>
+        <activity android:name=".AddPeroidicalView" />
+        <activity android:name=".ImageUpload"></activity>
     </application>
 
 </manifest>
