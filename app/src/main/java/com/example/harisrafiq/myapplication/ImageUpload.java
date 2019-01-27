@@ -35,6 +35,7 @@ public class ImageUpload extends AppCompatActivity {
     private Button mButtonUpload;
     private TextView mTextViewShowUploads;
     private EditText mEditTextFileName;
+    private EditText mEditText_Description;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
 
@@ -54,11 +55,11 @@ public class ImageUpload extends AppCompatActivity {
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
+        mEditText_Description = findViewById(R.id.edit_text_description);
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+
 
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +74,10 @@ public class ImageUpload extends AppCompatActivity {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
                     Toast.makeText(ImageUpload.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
+                    String c = mEditTextFileName.getText().toString().trim();
+                    mStorageRef = FirebaseStorage.getInstance().getReference("Attendance");
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Attendance");
+
                     uploadFile();
                 }
             }
@@ -135,7 +140,7 @@ public class ImageUpload extends AppCompatActivity {
 
                                     String p = uri.toString();
 
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),p);
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),p,mEditText_Description.getText().toString());
 
                                     String uploadId = mDatabaseRef.push().getKey();
                                     mDatabaseRef.child(uploadId).setValue(upload);

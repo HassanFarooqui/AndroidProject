@@ -39,7 +39,7 @@ public class Attendance_Image_List extends AppCompatActivity {
 
         mUploads = new ArrayList<>();
 
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Attendance");
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
