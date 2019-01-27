@@ -81,7 +81,7 @@ public class ImageUpload extends AppCompatActivity {
         mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openImagesActivity();
             }
         });
     }
@@ -114,7 +114,7 @@ public class ImageUpload extends AppCompatActivity {
 
     private void uploadFile() {
         if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+            final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
             mUploadTask = fileReference.putFile(mImageUri)
@@ -128,15 +128,28 @@ public class ImageUpload extends AppCompatActivity {
                                     mProgressBar.setProgress(0);
                                 }
                             }, 500);
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    // Got the download URL for 'users/me/profile.png'
+
+                                    String p = uri.toString();
+
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),p);
+
+                                    String uploadId = mDatabaseRef.push().getKey();
+                                    mDatabaseRef.child(uploadId).setValue(upload);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
 
                             Toast.makeText(ImageUpload.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-                                    //taskSnapshot.getDownloadUrl().toString()
-                                    taskSnapshot.getStorage().getDownloadUrl().toString()
-                            );
 
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue(upload);
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -155,5 +168,9 @@ public class ImageUpload extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void openImagesActivity() {
+        Intent intent = new Intent(this, Attendance_Image_List.class);
+        startActivity(intent);
     }
 }
