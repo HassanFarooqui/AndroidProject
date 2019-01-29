@@ -73,7 +73,8 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
             switch (nameOfInstitute.getText().toString()){
 
                 case "Notifications":
-                    Toast.makeText(v.getContext(), "Notifications CLicked" + pos, Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context,Notifications.class);
+                    context.startActivity(intent);
                     break;
                 case "Diary":
 

@@ -1,5 +1,7 @@
 package com.example.harisrafiq.myapplication;
 
+import java.util.ArrayList;
+
 public class Configuration {
 
   static String databaseAddress = "mongodb://192.168.0.100:27017";
@@ -17,6 +19,7 @@ public class Configuration {
   static String user = "";
   static String classNumber = "";
   static boolean uploadresult = true;
+  static ArrayList<String> notification_message = new ArrayList<String>();
 
 }
 
