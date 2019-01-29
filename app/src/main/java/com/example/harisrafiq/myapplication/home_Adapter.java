@@ -88,7 +88,7 @@ public class home_Adapter extends RecyclerView.Adapter<home_Adapter.MyViewHolder
                     break;
                 case "Result":
                    // Toast.makeText(v.getContext(), "School CLicked" + pos, Toast.LENGTH_SHORT).show();
-                    intent = new Intent(context,Attendance_Image_List.class);
+                    intent = new Intent(context,Result_list.class);
                     context.startActivity(intent);
                     break;
                 case "Periodical":

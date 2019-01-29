@@ -71,13 +71,20 @@ public class ImageUpload extends AppCompatActivity {
         mButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
                     Toast.makeText(ImageUpload.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
                     String c = mEditTextFileName.getText().toString().trim();
-                    mStorageRef = FirebaseStorage.getInstance().getReference("Attendance");
-                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Attendance");
 
+                    if(Configuration.uploadresult == false) {
+
+                        mStorageRef = FirebaseStorage.getInstance().getReference("Attendance");
+                        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Attendance");
+                    }else {
+                        mStorageRef = FirebaseStorage.getInstance().getReference("Results");
+                        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Results");
+                    }
                     uploadFile();
                 }
             }

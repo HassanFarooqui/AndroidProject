@@ -53,6 +53,7 @@ public class Attendance_Image_List extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Configuration.uploadresult = false;
                 Intent inten = new Intent(Attendance_Image_List.this,ImageUpload.class);
                 startActivity(inten);
 

@@ -16,6 +16,7 @@ public class Configuration {
   static String parent = "Parent";
   static String user = "";
   static String classNumber = "";
+  static boolean uploadresult = true;
 
 }
 
