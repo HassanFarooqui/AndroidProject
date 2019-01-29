@@ -1,5 +1,7 @@
 package com.example.harisrafiq.myapplication;
 
+        import android.content.Intent;
+        import android.support.design.widget.FloatingActionButton;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.support.v7.widget.LinearLayoutManager;
@@ -41,12 +43,39 @@ public class Attendance_Image_List extends AppCompatActivity {
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Attendance");
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_addAttendanceImage);
+
+        if (Configuration.user.equals(Configuration.parent)){
+            fab.hide();
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent inten = new Intent(Attendance_Image_List.this,ImageUpload.class);
+                startActivity(inten);
+
+
+            }
+        });
+
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Upload upload = postSnapshot.getValue(Upload.class);
-                    mUploads.add(upload);
+
+                    if (Configuration.user.equals(Configuration.parent)){
+                        Upload upload = postSnapshot.getValue(Upload.class);
+                        if(upload.getName().equals(Configuration.classNumber)){
+                            mUploads.add(upload);
+                        }
+
+                    }else {
+                        Upload upload = postSnapshot.getValue(Upload.class);
+                        mUploads.add(upload);
+                    }
+
                 }
 
                 mAdapter = new ImageAdapter(Attendance_Image_List.this, mUploads);

@@ -33,7 +33,8 @@
         <activity android:name=".Peroidical" />
         <activity android:name=".AddPeroidicalView" />
         <activity android:name=".ImageUpload" />
-        <activity android:name=".Attendance_Image_List"></activity>
+        <activity android:name=".Attendance_Image_List" />
+        <activity android:name=".Result_list"></activity>
     </application>
 
 </manifest>

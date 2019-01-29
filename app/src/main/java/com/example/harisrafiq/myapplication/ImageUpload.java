@@ -83,12 +83,14 @@ public class ImageUpload extends AppCompatActivity {
             }
         });
 
-        mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImagesActivity();
-            }
-        });
+        mTextViewShowUploads.setEnabled(false);
+
+//        mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openImagesActivity();
+//            }
+//        });
     }
 
     private void openFileChooser() {
@@ -174,8 +176,8 @@ public class ImageUpload extends AppCompatActivity {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
-    private void openImagesActivity() {
-        Intent intent = new Intent(this, Attendance_Image_List.class);
-        startActivity(intent);
-    }
+//    private void openImagesActivity() {
+//        Intent intent = new Intent(this, Attendance_Image_List.class);
+//        startActivity(intent);
+//    }
 }
